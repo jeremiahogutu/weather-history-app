@@ -11,6 +11,8 @@ const PROXY_URL = 'https://cors-anywhere.herokuapp.com/';
 
 class App extends Component {
     state = {
+        longitude: undefined,
+        latitude: undefined,
         temperature: undefined,
         timezone: undefined,
         humidity: undefined,
@@ -29,6 +31,8 @@ class App extends Component {
         const data = await api_call.json();
         console.log(data);
         this.setState({
+            latitude: data.latitude,
+            longitude: data.longitude,
             temperature: data.currently.temperature,
             timezone: data.currently.timezone,
             humidity: data.currently.humidity,
@@ -39,7 +43,11 @@ class App extends Component {
     };
 
     render() {
-        const {temperature, timezone, humidity, hour_summary, icon, error} = this.state;
+        const {
+            latitude, longitude, temperature,
+            timezone, humidity, hour_summary,
+            icon, error
+        } = this.state;
         return (
             <div className="App">
                 <div className='weather-container'>
@@ -48,6 +56,8 @@ class App extends Component {
                             <Grid item xs={12}>
                                 <Form getWeather={this.getWeather}/>
                                 <WeatherInfo
+                                    longitude={longitude}
+                                    latitude={latitude}
                                     temperature={temperature}
                                     timezone={timezone}
                                     humidity={humidity}
