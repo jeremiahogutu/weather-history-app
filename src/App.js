@@ -9,11 +9,32 @@ const API_KEY = process.env.REACT_APP_API_KEY;
 const PROXY_URL = 'https://cors-anywhere.herokuapp.com/';
 
 class App extends Component {
+    state = {
+        temperature: undefined,
+        timezone: undefined,
+        humidity: undefined,
+        hour_summary: undefined,
+        icon: undefined,
+        error: ''
+    };
     getWeather = async (e) => {
         e.preventDefault();
-        const api_call = await fetch(`${PROXY_URL}https://api.darksky.net/forecast/${API_KEY}/37.8267,-122.4233`);
+
+        const latitude = e.target.elements.latitude.value;
+        const longitude = e.target.elements.longitude.value;
+
+
+        const api_call = await fetch(`${PROXY_URL}https://api.darksky.net/forecast/${API_KEY}/${latitude},${longitude}`);
         const data = await api_call.json();
         console.log(data);
+        this.setState({
+            temperature: data.currently.temperature,
+            timezone: data.currently.timezone,
+            humidity: data.currently.humidity,
+            hour_summary: data.hourly.summary,
+            icon: data.currently.icon,
+            error: ''
+        })
     };
 
     render() {

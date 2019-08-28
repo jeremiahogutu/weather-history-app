@@ -10,28 +10,10 @@ import {
 import './WeatherInfo.css'
 
 const useStyles = makeStyles(theme => ({
-    container: {
-        display: 'flex',
-        alignItems: 'center',
-        margin: 0
-    },
     textField: {
         marginLeft: theme.spacing(1),
         marginRight: theme.spacing(1),
         width: 200,
-        color: '#818181'
-    },
-    dense: {
-        marginTop: 19,
-    },
-    menu: {
-        width: 200,
-    },
-    button: {
-        margin: theme.spacing(1),
-    },
-    input: {
-        display: 'none',
         color: '#818181'
     }
 }));
@@ -48,9 +30,9 @@ const WeatherInfo = props => {
                         </Grid>
                         <Grid item xs={6} style={{paddingBottom: '25px'}}>
                             <TextField
-                                id="longitude"
-                                name="longitude"
-                                label="Longitude"
+                                id="latitude"
+                                name="latitude"
+                                label="Latitude"
                                 type="search"
                                 className={classes.textField}
                                 margin="normal"
@@ -74,9 +56,9 @@ const WeatherInfo = props => {
                         </Grid>
                         <Grid item xs={6} style={{paddingBottom: '25px'}}>
                             <TextField
-                                id="latitude"
-                                name="latitude"
-                                label="Latitude"
+                                id="longitude"
+                                name="longitude"
+                                label="Longitude"
                                 type="search"
                                 className={classes.textField}
                                 margin="normal"
