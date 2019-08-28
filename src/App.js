@@ -11,43 +11,60 @@ const PROXY_URL = 'https://cors-anywhere.herokuapp.com/';
 
 class App extends Component {
     state = {
-        longitude: undefined,
-        latitude: undefined,
-        temperature: undefined,
-        timezone: undefined,
-        humidity: undefined,
-        hour_summary: undefined,
-        icon: undefined,
+        currentYear: '',
+        longitude: '',
+        latitude: '',
+        timezone: '',
+        currentTime: '',
+        year: '',
         error: ''
     };
-    getWeather = async (e) => {
+
+    currentUnixTime = (time) => {
+        // 1 year has 31536000 seconds
+        let secondsInYear = 31536000;
+        let date = new Date((time - secondsInYear)*1000);
+    }
+
+    getWeatherHistory  = ()  => {
+
+    };
+
+    getCurrentWeather = async (e) => {
         e.preventDefault();
 
         const latitude = e.target.elements.latitude.value;
         const longitude = e.target.elements.longitude.value;
-        document.getElementById('userInput').reset();
+        const userForm = document.getElementById('userInput');
+        userForm.reset();
+        if (!latitude || !longitude) {
+            this.setState({
+                error: 'Please enter longitude and latitude values'
+            });
+            return false
+        }
 
-
-        const api_call = await fetch(`${PROXY_URL}https://api.darksky.net/forecast/${API_KEY}/${latitude},${longitude}`);
+        const api_call = await fetch(`${PROXY_URL}https://api.darksky.net/forecast/${API_KEY}/${latitude},${longitude},2018-10-24T07:00:00`);
         const data = await api_call.json();
         console.log(data);
         this.setState({
-            latitude: data.latitude,
             longitude: data.longitude,
-            temperature: data.currently.temperature,
-            timezone: data.currently.timezone,
-            humidity: data.currently.humidity,
-            hour_summary: data.hourly.summary,
-            icon: data.currently.icon,
+            latitude: data.latitude,
+            currentYear: data.currently,
+            timezone: data.timezone,
+            currentTime: data.currently.time,
             error: ''
-        })
+        });
+
+        this.getWeatherHistory()
     };
+
+
 
     render() {
         const {
-            latitude, longitude, temperature,
-            timezone, humidity, hour_summary,
-            icon, error
+            latitude, longitude,
+            timezone, error, currentYear
         } = this.state;
         return (
             <div className="App">
@@ -55,15 +72,15 @@ class App extends Component {
                     <div className='weather-content'>
                         <Grid container>
                             <Grid item xs={12}>
-                                <Form getWeather={this.getWeather}/>
+                                <Form getCurrentWeather={this.getCurrentWeather}/>
                                 <WeatherInfo
                                     longitude={longitude}
                                     latitude={latitude}
-                                    temperature={temperature}
+                                    temperature={currentYear.temperature}
                                     timezone={timezone}
-                                    humidity={humidity}
-                                    hour_summary={hour_summary}
-                                    icon={icon}
+                                    humidity={currentYear.humidity}
+                                    summary={currentYear.summary}
+                                    icon={currentYear.icon}
                                     error={error}
                                 />
                             </Grid>
