@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './App.css';
 import {Grid} from '@material-ui/core';
+import Form from "./components/Form/Form";
 import WeatherInfo from "./components/WeatherInfo/WeatherInfo";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
@@ -38,13 +39,22 @@ class App extends Component {
     };
 
     render() {
+        const {temperature, timezone, humidity, hour_summary, icon, error} = this.state;
         return (
             <div className="App">
                 <div className='weather-container'>
                     <div className='weather-content'>
                         <Grid container>
                             <Grid item xs={12}>
-                                <WeatherInfo getWeather={this.getWeather}/>
+                                <Form getWeather={this.getWeather}/>
+                                <WeatherInfo
+                                    temperature={temperature}
+                                    timezone={timezone}
+                                    humidity={humidity}
+                                    hour_summary={hour_summary}
+                                    icon={icon}
+                                    error={error}
+                                />
                             </Grid>
                         </Grid>
                     </div>
