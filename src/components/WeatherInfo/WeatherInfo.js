@@ -7,7 +7,7 @@ import {
     TextField,
     makeStyles
 } from '@material-ui/core'
-
+import './WeatherInfo.css'
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
         marginLeft: theme.spacing(1),
         marginRight: theme.spacing(1),
         width: 200,
-        color: '#000'
+        color: '#818181'
     },
     dense: {
         marginTop: 19,
@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
     },
     input: {
         display: 'none',
-        color: '#000'
+        color: '#818181'
     }
 }));
 
@@ -42,10 +42,10 @@ const WeatherInfo = () => {
         <Card className='weather-card'>
             <CardContent>
                 <Grid container>
-                    <Grid item xs className='flex-center' style={{paddingBottom: '25px'}}>
-                        <h3>Weather</h3>
+                    <Grid item xs={12}>
+                        <h3 className='flex-center'>Weather</h3>
                     </Grid>
-                    <Grid item xs className='flex-center' style={{paddingBottom: '25px'}}>
+                    <Grid item xs={6} style={{paddingBottom: '25px'}}>
                         <TextField
                             id="longitude"
                             name="longitude"
@@ -56,8 +56,8 @@ const WeatherInfo = () => {
                             autoFocus
                             InputProps={{
                                 style: {
-                                    caretColor: '#000',
-                                    color: '#000'
+                                    caretColor: '#818181',
+                                    color: '#818181'
                                 }
                             }}
                             InputLabelProps={{
@@ -66,12 +66,12 @@ const WeatherInfo = () => {
                                     whiteSpace: 'nowrap',
                                     overflow: 'hidden',
                                     width: '100%',
-                                    color: '#000'
+                                    color: '#818181'
                                 }
                             }}
                         />
                     </Grid>
-                    <Grid item xs className='flex-center' style={{paddingBottom: '25px'}}>
+                    <Grid item xs={6} style={{paddingBottom: '25px'}}>
                         <TextField
                             id="latitude"
                             name="latitude"
@@ -81,8 +81,8 @@ const WeatherInfo = () => {
                             margin="normal"
                             InputProps={{
                                 style: {
-                                    caretColor: '#000',
-                                    color: '#000'
+                                    caretColor: '#818181',
+                                    color: '#818181'
                                 }
                             }}
                             InputLabelProps={{
@@ -91,17 +91,17 @@ const WeatherInfo = () => {
                                     whiteSpace: 'nowrap',
                                     overflow: 'hidden',
                                     width: '100%',
-                                    color: '#000'
+                                    color: '#818181'
                                 }
                             }}
                         />
                     </Grid>
                 </Grid>
-
-
-                <Button variant="contained" color="primary">
-                    Submit
-                </Button>
+                <Grid item xs={12} className='flex-center' style={{paddingBottom: '25px', margin: '0 auto'}}>
+                    <Button variant="contained" color="primary">
+                        Submit
+                    </Button>
+                </Grid>
             </CardContent>
         </Card>
     );
