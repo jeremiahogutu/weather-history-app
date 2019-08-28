@@ -25,6 +25,7 @@ class App extends Component {
 
         const latitude = e.target.elements.latitude.value;
         const longitude = e.target.elements.longitude.value;
+        document.getElementById('userInput').reset();
 
 
         const api_call = await fetch(`${PROXY_URL}https://api.darksky.net/forecast/${API_KEY}/${latitude},${longitude}`);

@@ -23,7 +23,7 @@ const Form = props => {
     return (
         <Card className='weather-card'>
             <CardContent>
-                <form className='flex-center' onSubmit={props.getWeather}>
+                <form id='userInput' className='flex-center' onSubmit={props.getWeather}>
                     <Grid container>
                         <Grid item xs={12}>
                             <h3 className='flex-center'>Weather</h3>
