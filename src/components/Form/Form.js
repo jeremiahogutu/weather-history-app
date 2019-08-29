@@ -25,7 +25,7 @@ const Form = props => {
                 <Grid item xs={12}>
                     <h2 className='flex-center main-text'>Weather History</h2>
                 </Grid>
-                <Grid className='flex-center' item xs={6} style={{paddingBottom: '25px'}}>
+                <Grid className='flex-center' item xs={12} sm={6} style={{paddingBottom: '25px'}}>
                     <TextField
                         id="latitude"
                         name="latitude"
@@ -51,7 +51,7 @@ const Form = props => {
                         }}
                     />
                 </Grid>
-                <Grid className='flex-center' item xs={6} style={{paddingBottom: '25px'}}>
+                <Grid className='flex-center' item xs={12} sm={6} style={{paddingBottom: '25px'}}>
                     <TextField
                         id="longitude"
                         name="longitude"
