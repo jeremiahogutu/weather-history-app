@@ -1,0 +1,178 @@
+import React, {Component} from 'react';
+import './App.css';
+import {Card, CardContent, Grid, CircularProgress} from '@material-ui/core';
+import Form from "./components/Form/Form";
+import WeatherInfo from "./components/WeatherInfo/WeatherInfo";
+
+const API_KEY = process.env.REACT_APP_API_KEY;
+
+// Added to deal with cors errors when testing locally
+const PROXY_URL = 'https://cors-anywhere.herokuapp.com/';
+
+class App extends Component {
+    state = {
+        longitude: '',
+        latitude: '',
+        currentYear: '',
+        oneYearAgo: '',
+        twoYearsAgo: '',
+        threeYearsAgo: '',
+        timezone: '',
+        loading: false,
+        error: ''
+    };
+
+    // oneYearBack() function returns the unix time minus one year
+    oneYearBack = (time) => {
+        // 1 year has 31536000 seconds
+        let secondsInYear = 31536000;
+        // subtract 1 year from the unix time that is passed in to the function
+        let date = new Date((time - secondsInYear) * 1000);
+        // This will return the date a year ago in seconds (unix time)
+        return date.getTime() / 1000;
+    };
+
+    getWeather = async (e) => {
+        e.preventDefault();
+        const latitude = e.target.elements.latitude.value;
+        const longitude = e.target.elements.longitude.value;
+        const userForm = document.getElementById('userInput');
+        let unixTime;
+        userForm.reset();
+        if (!latitude || !longitude) {
+            this.setState({
+                error: 'Please enter longitude and latitude values'
+            });
+            return false
+        } else {
+            this.setState({
+                loading: true,
+                error: ''
+            })
+        }
+
+        if (!unixTime) {
+            let date = new Date();
+            // round unix time to the nearest minute
+            unixTime = Math.round(date.getTime() / 1000)
+        }
+
+        let yearsOfHistory = 3;
+        let weatherHistoryArray = [];
+
+        while (yearsOfHistory >= 0) {
+            const api_call = await fetch(`${PROXY_URL}https://api.darksky.net/forecast/${API_KEY}/${latitude},${longitude},${unixTime}`);
+            const data = await api_call.json();
+            weatherHistoryArray.push(data);
+            unixTime = this.oneYearBack(unixTime);
+            yearsOfHistory--;
+        }
+        console.log(weatherHistoryArray);
+
+        this.setState({
+            longitude: weatherHistoryArray[0].longitude,
+            latitude: weatherHistoryArray[0].latitude,
+            timezone: weatherHistoryArray[0].timezone,
+            currentYear: weatherHistoryArray[0].currently,
+            oneYearAgo: weatherHistoryArray[1].currently,
+            twoYearsAgo: weatherHistoryArray[2].currently,
+            threeYearsAgo: weatherHistoryArray[3].currently,
+            loading: false,
+            error: ''
+        });
+    };
+
+
+    render() {
+        const {
+            latitude, longitude, timezone,
+            error, currentYear, oneYearAgo,
+            twoYearsAgo, threeYearsAgo, loading
+        } = this.state;
+
+        // New date Object
+        const currentDate = new Date();
+
+        return (
+            <div className="App">
+                <div className='weather-container'>
+                    <div className='weather-content'>
+                        <Card className='weather-card'>
+                            <CardContent>
+                                <Grid container>
+                                    <Grid item xs={12} className='flex-center'
+                                          style={{flexDirection: 'column', alignItems: 'center'}}>
+                                        <Form getWeather={this.getWeather}/>
+                                        <p className='danger-text'>{error}</p>
+                                    </Grid>
+                                    <Grid item xs={12} className='flex-center'>
+                                        {loading && <CircularProgress/>}
+                                    </Grid>
+                                    <Grid item xs={12} className='flex-center'>
+                                        {longitude && latitude && <div>
+                                            <h2 className='main-text'>Location Information</h2>
+                                            <p className='main-text'>Latitude: <span
+                                                className='secondary-text'>{latitude}</span></p>
+                                            <p className='main-text'>Longitude: <span
+                                                className='secondary-text'>{longitude}</span></p>
+                                            <p className='main-text'>Timezone: <span
+                                                className='secondary-text'>{timezone}</span></p>
+                                            <p className='main-text'>Current Time: <span
+                                                className='secondary-text'>{currentDate.toLocaleTimeString()}</span></p>
+                                        </div>}
+                                    </Grid>
+                                    <Grid item xs={12} sm={6} md={6}>
+                                        <WeatherInfo
+                                            title={currentDate.getFullYear()}
+                                            temperature={currentYear.temperature}
+                                            humidity={currentYear.humidity}
+                                            windSpeed={currentYear.windSpeed}
+                                            visibility={currentYear.visibility}
+                                            summary={currentYear.summary}
+                                            icon={currentYear.icon}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6} md={6}>
+                                        <WeatherInfo
+                                            title={currentDate.getFullYear() - 1}
+                                            temperature={oneYearAgo.temperature}
+                                            humidity={oneYearAgo.humidity}
+                                            windSpeed={oneYearAgo.windSpeed}
+                                            visibility={oneYearAgo.visibility}
+                                            summary={oneYearAgo.summary}
+                                            icon={oneYearAgo.icon}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6} md={6}>
+                                        <WeatherInfo
+                                            title={currentDate.getFullYear() - 2}
+                                            temperature={twoYearsAgo.temperature}
+                                            humidity={twoYearsAgo.humidity}
+                                            windSpeed={twoYearsAgo.windSpeed}
+                                            visibility={twoYearsAgo.visibility}
+                                            summary={twoYearsAgo.summary}
+                                            icon={twoYearsAgo.icon}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6} md={6}>
+                                        <WeatherInfo
+                                            title={currentDate.getFullYear() - 3}
+                                            temperature={threeYearsAgo.temperature}
+                                            humidity={threeYearsAgo.humidity}
+                                            windSpeed={threeYearsAgo.windSpeed}
+                                            visibility={threeYearsAgo.visibility}
+                                            summary={threeYearsAgo.summary}
+                                            icon={threeYearsAgo.icon}
+                                        />
+                                    </Grid>
+                                </Grid>
+                            </CardContent>
+                        </Card>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+};
+
+export default App;
