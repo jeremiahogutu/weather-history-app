@@ -36,3 +36,7 @@
 .danger-text {
     color: red;
 }
+
+.MuiCircularProgress-colorPrimary {
+    color: #3D5A6C !important;
+}

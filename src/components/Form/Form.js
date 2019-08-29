@@ -23,7 +23,7 @@ const Form = props => {
         <form id='userInput' className='flex-center' onSubmit={props.getWeather}>
             <Grid container>
                 <Grid item xs={12}>
-                    <h2 className='flex-center main-text'>Weather</h2>
+                    <h2 className='flex-center main-text'>Weather History</h2>
                 </Grid>
                 <Grid className='flex-center' item xs={6} style={{paddingBottom: '25px'}}>
                     <TextField
@@ -77,7 +77,7 @@ const Form = props => {
                     />
                 </Grid>
                 <Grid item xs={12} className='flex-center'>
-                    <Button type="submit" variant="contained" color="primary">
+                    <Button type="submit" variant="contained" style={{backgroundColor: '#3D5A6C', color: '#fff'}}>
                         Submit
                     </Button>
                 </Grid>
