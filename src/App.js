@@ -11,31 +11,34 @@ const PROXY_URL = 'https://cors-anywhere.herokuapp.com/';
 
 class App extends Component {
     state = {
-        currentYear: '',
         longitude: '',
         latitude: '',
+        currentYear: '',
+        oneYearAgo: '',
+        twoYearsAgo: '',
+        threeYearsAgo: '',
         timezone: '',
-        currentTime: '',
+        unixTime: '',
         year: '',
         error: ''
     };
 
-    currentUnixTime = (time) => {
+    // oneYearBack() function returns the unix time minus one year
+    oneYearBack = (time) => {
         // 1 year has 31536000 seconds
         let secondsInYear = 31536000;
+        // subtract 1 year from the unix time that is passed in to the function
         let date = new Date((time - secondsInYear)*1000);
-    }
-
-    getWeatherHistory  = ()  => {
-
+        // This will return the date a year ago in seconds (unix time)
+        return date.getTime()/1000;
     };
 
-    getCurrentWeather = async (e) => {
+    getWeather = async (e) => {
         e.preventDefault();
-
         const latitude = e.target.elements.latitude.value;
         const longitude = e.target.elements.longitude.value;
         const userForm = document.getElementById('userInput');
+        let unixTime;
         userForm.reset();
         if (!latitude || !longitude) {
             this.setState({
@@ -44,19 +47,34 @@ class App extends Component {
             return false
         }
 
-        const api_call = await fetch(`${PROXY_URL}https://api.darksky.net/forecast/${API_KEY}/${latitude},${longitude},2018-10-24T07:00:00`);
-        const data = await api_call.json();
-        console.log(data);
+        if (!unixTime) {
+            let date = new Date();
+            // round unix time to the nearest minute
+            unixTime = Math.round(date.getTime()/1000)
+        }
+
+        let yearsOfHistory = 3;
+        let weatherHistoryArray = [];
+
+        while (yearsOfHistory >= 0) {
+            const api_call = await fetch(`${PROXY_URL}https://api.darksky.net/forecast/${API_KEY}/${latitude},${longitude},${unixTime}`);
+            const data = await api_call.json();
+            weatherHistoryArray.push(data);
+            unixTime = this.oneYearBack(unixTime);
+            yearsOfHistory--;
+        }
+        console.log(weatherHistoryArray);
+        // console.log(data);
         this.setState({
-            longitude: data.longitude,
-            latitude: data.latitude,
-            currentYear: data.currently,
-            timezone: data.timezone,
-            currentTime: data.currently.time,
+            longitude: weatherHistoryArray[0].longitude,
+            latitude: weatherHistoryArray[0].latitude,
+            timezone: weatherHistoryArray[0].timezone,
+            currentYear: weatherHistoryArray[0].currently,
+            oneYearAgo: weatherHistoryArray[1].currently,
+            twoYearsAgo: weatherHistoryArray[2].currently,
+            threeYearsAgo: weatherHistoryArray[3].currently,
             error: ''
         });
-
-        this.getWeatherHistory()
     };
 
 
@@ -72,7 +90,7 @@ class App extends Component {
                     <div className='weather-content'>
                         <Grid container>
                             <Grid item xs={12}>
-                                <Form getCurrentWeather={this.getCurrentWeather}/>
+                                <Form getWeather={this.getWeather}/>
                                 <WeatherInfo
                                     longitude={longitude}
                                     latitude={latitude}
