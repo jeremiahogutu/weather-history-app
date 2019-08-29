@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
-import {Card, CardContent, Grid} from '@material-ui/core';
+import {Card, CardContent, Grid, CircularProgress} from '@material-ui/core';
 import Form from "./components/Form/Form";
 import WeatherInfo from "./components/WeatherInfo/WeatherInfo";
 
@@ -18,6 +18,7 @@ class App extends Component {
         twoYearsAgo: '',
         threeYearsAgo: '',
         timezone: '',
+        loading: false,
         error: ''
     };
 
@@ -43,6 +44,11 @@ class App extends Component {
                 error: 'Please enter longitude and latitude values'
             });
             return false
+        } else {
+            this.setState({
+                loading: true,
+                error: ''
+            })
         }
 
         if (!unixTime) {
@@ -71,6 +77,7 @@ class App extends Component {
             oneYearAgo: weatherHistoryArray[1].currently,
             twoYearsAgo: weatherHistoryArray[2].currently,
             threeYearsAgo: weatherHistoryArray[3].currently,
+            loading: false,
             error: ''
         });
     };
@@ -80,7 +87,7 @@ class App extends Component {
         const {
             latitude, longitude, timezone,
             error, currentYear, oneYearAgo,
-            twoYearsAgo, threeYearsAgo
+            twoYearsAgo, threeYearsAgo, loading
         } = this.state;
 
         // New date Object
@@ -93,20 +100,28 @@ class App extends Component {
                         <Card className='weather-card'>
                             <CardContent>
                                 <Grid container>
-                                    <Grid item xs={12} className='flex-center' style={{flexDirection: 'column', alignItems: 'center'}}>
+                                    <Grid item xs={12} className='flex-center'
+                                          style={{flexDirection: 'column', alignItems: 'center'}}>
                                         <Form getWeather={this.getWeather}/>
                                         <p className='danger-text'>{error}</p>
                                     </Grid>
                                     <Grid item xs={12} className='flex-center'>
+                                        {loading && <CircularProgress/>}
+                                    </Grid>
+                                    <Grid item xs={12} className='flex-center'>
                                         {longitude && latitude && <div>
                                             <h2 className='main-text'>Location Information</h2>
-                                            <p className='main-text'>Latitude: <span className='secondary-text'>{latitude}</span></p>
-                                            <p className='main-text'>Longitude: <span className='secondary-text'>{longitude}</span></p>
-                                            <p className='main-text'>Timezone: <span className='secondary-text'>{timezone}</span></p>
-                                            <p className='main-text'>Current Time: <span className='secondary-text'>{currentDate.toLocaleTimeString()}</span></p>
+                                            <p className='main-text'>Latitude: <span
+                                                className='secondary-text'>{latitude}</span></p>
+                                            <p className='main-text'>Longitude: <span
+                                                className='secondary-text'>{longitude}</span></p>
+                                            <p className='main-text'>Timezone: <span
+                                                className='secondary-text'>{timezone}</span></p>
+                                            <p className='main-text'>Current Time: <span
+                                                className='secondary-text'>{currentDate.toLocaleTimeString()}</span></p>
                                         </div>}
                                     </Grid>
-                                    <Grid item xs={12} sm={6} md={6} >
+                                    <Grid item xs={12} sm={6} md={6}>
                                         <WeatherInfo
                                             title={currentDate.getFullYear()}
                                             temperature={currentYear.temperature}
@@ -117,7 +132,7 @@ class App extends Component {
                                             icon={currentYear.icon}
                                         />
                                     </Grid>
-                                    <Grid item xs={12} sm={6} md={6} >
+                                    <Grid item xs={12} sm={6} md={6}>
                                         <WeatherInfo
                                             title={currentDate.getFullYear() - 1}
                                             temperature={oneYearAgo.temperature}
@@ -128,7 +143,7 @@ class App extends Component {
                                             icon={oneYearAgo.icon}
                                         />
                                     </Grid>
-                                    <Grid item xs={12} sm={6} md={6} >
+                                    <Grid item xs={12} sm={6} md={6}>
                                         <WeatherInfo
                                             title={currentDate.getFullYear() - 2}
                                             temperature={twoYearsAgo.temperature}
@@ -139,7 +154,7 @@ class App extends Component {
                                             icon={twoYearsAgo.icon}
                                         />
                                     </Grid>
-                                    <Grid item xs={12} sm={6} md={6} >
+                                    <Grid item xs={12} sm={6} md={6}>
                                         <WeatherInfo
                                             title={currentDate.getFullYear() - 3}
                                             temperature={threeYearsAgo.temperature}
