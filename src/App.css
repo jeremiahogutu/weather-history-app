@@ -24,3 +24,15 @@
     display: flex;
     justify-content: center;
 }
+
+.main-text {
+    color: #3D5A6C;
+}
+
+.secondary-text {
+    color: #00A7CE;
+}
+
+.danger-text {
+    color: red;
+}

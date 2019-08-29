@@ -23,7 +23,7 @@ const Form = props => {
         <form id='userInput' className='flex-center' onSubmit={props.getWeather}>
             <Grid container>
                 <Grid item xs={12}>
-                    <h2 className='flex-center'>Weather</h2>
+                    <h2 className='flex-center main-text'>Weather</h2>
                 </Grid>
                 <Grid className='flex-center' item xs={6} style={{paddingBottom: '25px'}}>
                     <TextField

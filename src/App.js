@@ -93,17 +93,17 @@ class App extends Component {
                         <Card className='weather-card'>
                             <CardContent>
                                 <Grid container>
-                                    <Grid item xs={12}>
+                                    <Grid item xs={12} className='flex-center' style={{flexDirection: 'column', alignItems: 'center'}}>
                                         <Form getWeather={this.getWeather}/>
-                                        <p>{error}</p>
+                                        <p className='danger-text'>{error}</p>
                                     </Grid>
                                     <Grid item xs={12} className='flex-center'>
                                         {longitude && latitude && <div>
-                                            <h2>Location Infomation</h2>
-                                            <p>Latitude: {latitude}</p>
-                                            <p>Longitude: {longitude}</p>
-                                            <p>Timezone: {timezone}</p>
-                                            <p>Current Time: {currentDate.toLocaleTimeString()}</p>
+                                            <h2 className='main-text'>Location Information</h2>
+                                            <p className='main-text'>Latitude: <span className='secondary-text'>{latitude}</span></p>
+                                            <p className='main-text'>Longitude: <span className='secondary-text'>{longitude}</span></p>
+                                            <p className='main-text'>Timezone: <span className='secondary-text'>{timezone}</span></p>
+                                            <p className='main-text'>Current Time: <span className='secondary-text'>{currentDate.toLocaleTimeString()}</span></p>
                                         </div>}
                                     </Grid>
                                     <Grid item xs={12} sm={6} md={6} >
