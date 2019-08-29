@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
-import {Grid} from '@material-ui/core';
+import {Card, CardContent, Grid} from '@material-ui/core';
 import Form from "./components/Form/Form";
 import WeatherInfo from "./components/WeatherInfo/WeatherInfo";
 
@@ -18,8 +18,6 @@ class App extends Component {
         twoYearsAgo: '',
         threeYearsAgo: '',
         timezone: '',
-        unixTime: '',
-        year: '',
         error: ''
     };
 
@@ -28,9 +26,9 @@ class App extends Component {
         // 1 year has 31536000 seconds
         let secondsInYear = 31536000;
         // subtract 1 year from the unix time that is passed in to the function
-        let date = new Date((time - secondsInYear)*1000);
+        let date = new Date((time - secondsInYear) * 1000);
         // This will return the date a year ago in seconds (unix time)
-        return date.getTime()/1000;
+        return date.getTime() / 1000;
     };
 
     getWeather = async (e) => {
@@ -50,7 +48,7 @@ class App extends Component {
         if (!unixTime) {
             let date = new Date();
             // round unix time to the nearest minute
-            unixTime = Math.round(date.getTime()/1000)
+            unixTime = Math.round(date.getTime() / 1000)
         }
 
         let yearsOfHistory = 3;
@@ -64,7 +62,7 @@ class App extends Component {
             yearsOfHistory--;
         }
         console.log(weatherHistoryArray);
-        // console.log(data);
+
         this.setState({
             longitude: weatherHistoryArray[0].longitude,
             latitude: weatherHistoryArray[0].latitude,
@@ -78,31 +76,83 @@ class App extends Component {
     };
 
 
-
     render() {
         const {
-            latitude, longitude,
-            timezone, error, currentYear
+            latitude, longitude, timezone,
+            error, currentYear, oneYearAgo,
+            twoYearsAgo, threeYearsAgo
         } = this.state;
+
+        // New date Object
+        const currentDate = new Date();
+
         return (
             <div className="App">
                 <div className='weather-container'>
                     <div className='weather-content'>
-                        <Grid container>
-                            <Grid item xs={12}>
-                                <Form getWeather={this.getWeather}/>
-                                <WeatherInfo
-                                    longitude={longitude}
-                                    latitude={latitude}
-                                    temperature={currentYear.temperature}
-                                    timezone={timezone}
-                                    humidity={currentYear.humidity}
-                                    summary={currentYear.summary}
-                                    icon={currentYear.icon}
-                                    error={error}
-                                />
-                            </Grid>
-                        </Grid>
+                        <Card className='weather-card'>
+                            <CardContent>
+                                <Grid container>
+                                    <Grid item xs={12}>
+                                        <Form getWeather={this.getWeather}/>
+                                        <p>{error}</p>
+                                    </Grid>
+                                    <Grid item xs={12} className='flex-center'>
+                                        {longitude && latitude && <div>
+                                            <h2>Location Infomation</h2>
+                                            <p>Latitude: {latitude}</p>
+                                            <p>Longitude: {longitude}</p>
+                                            <p>Timezone: {timezone}</p>
+                                            <p>Current Time: {currentDate.toLocaleTimeString()}</p>
+                                        </div>}
+                                    </Grid>
+                                    <Grid item xs={12} sm={6} md={6} >
+                                        <WeatherInfo
+                                            title={currentDate.getFullYear()}
+                                            temperature={currentYear.temperature}
+                                            humidity={currentYear.humidity}
+                                            windSpeed={currentYear.windSpeed}
+                                            visibility={currentYear.visibility}
+                                            summary={currentYear.summary}
+                                            icon={currentYear.icon}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6} md={6} >
+                                        <WeatherInfo
+                                            title={currentDate.getFullYear() - 1}
+                                            temperature={oneYearAgo.temperature}
+                                            humidity={oneYearAgo.humidity}
+                                            windSpeed={oneYearAgo.windSpeed}
+                                            visibility={oneYearAgo.visibility}
+                                            summary={oneYearAgo.summary}
+                                            icon={oneYearAgo.icon}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6} md={6} >
+                                        <WeatherInfo
+                                            title={currentDate.getFullYear() - 2}
+                                            temperature={twoYearsAgo.temperature}
+                                            humidity={twoYearsAgo.humidity}
+                                            windSpeed={twoYearsAgo.windSpeed}
+                                            visibility={twoYearsAgo.visibility}
+                                            summary={twoYearsAgo.summary}
+                                            icon={twoYearsAgo.icon}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6} md={6} >
+                                        <WeatherInfo
+                                            title={currentDate.getFullYear() - 3}
+                                            temperature={threeYearsAgo.temperature}
+                                            humidity={threeYearsAgo.humidity}
+                                            windSpeed={threeYearsAgo.windSpeed}
+                                            visibility={threeYearsAgo.visibility}
+                                            summary={threeYearsAgo.summary}
+                                            icon={threeYearsAgo.icon}
+                                        />
+                                    </Grid>
+                                </Grid>
+                            </CardContent>
+                        </Card>
                     </div>
                 </div>
             </div>

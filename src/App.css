@@ -1,14 +1,26 @@
+/*html, body, .App, #root {*/
+/*    height: 100%;*/
+/*}*/
+
 .weather-container {
-  display: flex;
-  justify-content: center;
-  height: 100vh;
-  background: #777;
+    display: flex;
+    justify-content: center;
+    background: #777;
+    min-height: 100vh;
 }
 
 .weather-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  max-width: 1100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 1100px;
 }
 
+.weather-card {
+    min-width: 275px;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+}
