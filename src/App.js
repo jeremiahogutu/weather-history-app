@@ -13,10 +13,7 @@ class App extends Component {
     state = {
         longitude: '',
         latitude: '',
-        currentYear: '',
-        oneYearAgo: '',
-        twoYearsAgo: '',
-        threeYearsAgo: '',
+        weatherHistory: [],
         timezone: '',
         loading: false,
         error: ''
@@ -73,10 +70,7 @@ class App extends Component {
             longitude: weatherHistoryArray[0].longitude,
             latitude: weatherHistoryArray[0].latitude,
             timezone: weatherHistoryArray[0].timezone,
-            currentYear: weatherHistoryArray[0].currently,
-            oneYearAgo: weatherHistoryArray[1].currently,
-            twoYearsAgo: weatherHistoryArray[2].currently,
-            threeYearsAgo: weatherHistoryArray[3].currently,
+            weatherHistory: weatherHistoryArray,
             loading: false,
             error: ''
         });
@@ -86,8 +80,7 @@ class App extends Component {
     render() {
         const {
             latitude, longitude, timezone,
-            error, currentYear, oneYearAgo,
-            twoYearsAgo, threeYearsAgo, loading
+            weatherHistory, error, loading
         } = this.state;
 
         // New date Object
@@ -121,58 +114,27 @@ class App extends Component {
                                                 className='secondary-text'>{currentDate.toLocaleTimeString()}</span></p>
                                         </div>}
                                     </Grid>
-                                    <Grid item xs={12} sm={6} md={6}>
-                                        <WeatherInfo
-                                            title={currentDate.getFullYear()}
-                                            temperature={currentYear.temperature}
-                                            humidity={currentYear.humidity}
-                                            windSpeed={currentYear.windSpeed}
-                                            visibility={currentYear.visibility}
-                                            summary={currentYear.summary}
-                                            icon={currentYear.icon}
-                                        />
+                                        {weatherHistory.map((weather, i) => (
+                                            <Grid item xs={12} sm={6} md={6} key={i}>
+                                                <WeatherInfo
+                                                    title={currentDate.getFullYear() - i}
+                                                    temperature={weather.currently.temperature}
+                                                    humidity={weather.currently.humidity}
+                                                    windSpeed={weather.currently.windSpeed}
+                                                    visibility={weather.currently.visibility}
+                                                    summary={weather.currently.summary}
+                                                    icon={weather.currently.icon}
+                                                />
+                                            </Grid>
+                                        ))}
                                     </Grid>
-                                    <Grid item xs={12} sm={6} md={6}>
-                                        <WeatherInfo
-                                            title={currentDate.getFullYear() - 1}
-                                            temperature={oneYearAgo.temperature}
-                                            humidity={oneYearAgo.humidity}
-                                            windSpeed={oneYearAgo.windSpeed}
-                                            visibility={oneYearAgo.visibility}
-                                            summary={oneYearAgo.summary}
-                                            icon={oneYearAgo.icon}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} sm={6} md={6}>
-                                        <WeatherInfo
-                                            title={currentDate.getFullYear() - 2}
-                                            temperature={twoYearsAgo.temperature}
-                                            humidity={twoYearsAgo.humidity}
-                                            windSpeed={twoYearsAgo.windSpeed}
-                                            visibility={twoYearsAgo.visibility}
-                                            summary={twoYearsAgo.summary}
-                                            icon={twoYearsAgo.icon}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} sm={6} md={6}>
-                                        <WeatherInfo
-                                            title={currentDate.getFullYear() - 3}
-                                            temperature={threeYearsAgo.temperature}
-                                            humidity={threeYearsAgo.humidity}
-                                            windSpeed={threeYearsAgo.windSpeed}
-                                            visibility={threeYearsAgo.visibility}
-                                            summary={threeYearsAgo.summary}
-                                            icon={threeYearsAgo.icon}
-                                        />
-                                    </Grid>
-                                </Grid>
                             </CardContent>
                         </Card>
                     </div>
                 </div>
             </div>
-        );
+    );
     }
-};
+    };
 
-export default App;
+    export default App;
