@@ -9,12 +9,15 @@ const API_KEY = process.env.REACT_APP_API_KEY;
 // Added to deal with cors errors when testing locally
 const PROXY_URL = 'https://cors-anywhere.herokuapp.com/';
 
+let unixTime;
+
 class App extends Component {
     state = {
         longitude: '',
         latitude: '',
         weatherHistory: [],
         timezone: '',
+        unixTime: '',
         loading: false,
         error: ''
     };
@@ -31,10 +34,9 @@ class App extends Component {
 
     getWeather = async (e) => {
         e.preventDefault();
-        const latitude = e.target.elements.latitude.value;
-        const longitude = e.target.elements.longitude.value;
+        const latitude = e.target.elements.latitude.value.trim();
+        const longitude = e.target.elements.longitude.value.trim();
         const userForm = document.getElementById('userInput');
-        let unixTime;
         userForm.reset();
         if (!latitude || !longitude) {
             this.setState({
@@ -45,13 +47,16 @@ class App extends Component {
             this.setState({
                 loading: true,
                 error: ''
-            })
+            });
         }
 
         if (!unixTime) {
             let date = new Date();
-            // round unix time to the nearest minute
-            unixTime = Math.round(date.getTime() / 1000)
+            // round unix time to the nearest second
+            unixTime = Math.round(date.getTime() / 1000);
+            this.setState({
+                unixTime
+            })
         }
 
         let yearsOfHistory = 3;
@@ -59,6 +64,17 @@ class App extends Component {
 
         while (yearsOfHistory >= 0) {
             const api_call = await fetch(`${PROXY_URL}https://api.darksky.net/forecast/${API_KEY}/${latitude},${longitude},${unixTime}`);
+            if (!api_call.ok) {
+                this.setState({
+                    longitude: '',
+                    latitude: '',
+                    weatherHistory: [],
+                    timezone: '',
+                    loading: false,
+                    error: 'Please enter valid values for longitude and latitude'
+                });
+                return false
+            }
             const data = await api_call.json();
             weatherHistoryArray.push(data);
             unixTime = this.oneYearBack(unixTime);
@@ -80,11 +96,12 @@ class App extends Component {
     render() {
         const {
             latitude, longitude, timezone,
-            weatherHistory, error, loading
+            weatherHistory, error, loading,
+            unixTime
         } = this.state;
 
         // New date Object
-        const currentDate = new Date();
+        const currentDate = new Date(unixTime*1000);
 
         return (
             <div className="App">
@@ -101,8 +118,8 @@ class App extends Component {
                                     <Grid item xs={12} className='flex-center'>
                                         {loading && <CircularProgress/>}
                                     </Grid>
-                                    <Grid item xs={12} className='flex-center'>
-                                        {longitude && latitude && <div>
+                                    {timezone && <Grid item xs={12} className='flex-center'>
+                                        <div>
                                             <h2 className='main-text'>Location Information</h2>
                                             <p className='main-text'>Latitude: <span
                                                 className='secondary-text'>{latitude}</span></p>
@@ -112,29 +129,29 @@ class App extends Component {
                                                 className='secondary-text'>{timezone}</span></p>
                                             <p className='main-text'>Current Time: <span
                                                 className='secondary-text'>{currentDate.toLocaleTimeString()}</span></p>
-                                        </div>}
-                                    </Grid>
-                                        {weatherHistory.map((weather, i) => (
-                                            <Grid item xs={12} sm={6} md={6} key={i}>
-                                                <WeatherInfo
-                                                    title={currentDate.getFullYear() - i}
-                                                    temperature={weather.currently.temperature}
-                                                    humidity={weather.currently.humidity}
-                                                    windSpeed={weather.currently.windSpeed}
-                                                    visibility={weather.currently.visibility}
-                                                    summary={weather.currently.summary}
-                                                    icon={weather.currently.icon}
-                                                />
-                                            </Grid>
-                                        ))}
-                                    </Grid>
+                                        </div>
+                                    </Grid>}
+                                    {weatherHistory.map((weather, i) => (
+                                        <Grid item xs={12} sm={6} md={6} key={i}>
+                                            <WeatherInfo
+                                                title={currentDate.getFullYear() - i}
+                                                temperature={weather.currently.temperature}
+                                                humidity={weather.currently.humidity}
+                                                windSpeed={weather.currently.windSpeed}
+                                                visibility={weather.currently.visibility}
+                                                summary={weather.currently.summary}
+                                                icon={weather.currently.icon}
+                                            />
+                                        </Grid>
+                                    ))}
+                                </Grid>
                             </CardContent>
                         </Card>
                     </div>
                 </div>
             </div>
-    );
+        );
     }
-    };
+};
 
-    export default App;
+export default App;
