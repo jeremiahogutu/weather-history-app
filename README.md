@@ -1,6 +1,6 @@
 # Weather History App
 
-[![CircleCI](https://img.shields.io/circleci/build/github/jeremiahogutu/circle-ci-react.svg)](https://circleci.com/gh/jeremiahogutu/weather-history-app) [![Maintainability](https://api.codeclimate.com/v1/badges/785d13dca205e8150eb0/maintainability)](https://codeclimate.com/github/jeremiahogutu/weather-history-app/maintainability)
+[![CircleCI](https://img.shields.io/circleci/build/github/jeremiahogutu/circle-ci-react.svg)](https://circleci.com/gh/jeremiahogutu/weather-history-app) [![Maintainability](https://api.codeclimate.com/v1/badges/97e41be3fe208942fbfc/maintainability)](https://codeclimate.com/github/jeremiahogutu/weather-history-app/maintainability)
 
 Weather history app using dark sky api
 
