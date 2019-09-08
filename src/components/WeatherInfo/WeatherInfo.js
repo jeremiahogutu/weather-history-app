@@ -11,7 +11,7 @@ const WeatherInfo = ({title, ...weatherProps}) => {
     return (
         <div className='flex-center'>
             <div style={{display: 'flex'}}>
-                {weatherProps.icon && <div className='icon-container'>
+                {weatherProps.temperature && <div className='icon-container'>
                     <Skycons
                         color='#00A7CE'
                         icon={iconName}
