@@ -27,6 +27,7 @@
 
 .main-text {
     color: #3D5A6C;
+    text-transform: capitalize;
 }
 
 .secondary-text {
