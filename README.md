@@ -1,6 +1,6 @@
 # Weather History App
 
-[![CircleCI](https://img.shields.io/circleci/build/github/jeremiahogutu/circle-ci-react.svg)](https://circleci.com/gh/jeremiahogutu/weather-history-app) [![Maintainability](https://api.codeclimate.com/v1/badges/97e41be3fe208942fbfc/maintainability)](https://codeclimate.com/github/jeremiahogutu/weather-history-app/maintainability)
+[![CircleCI](https://img.shields.io/circleci/build/github/jeremiahogutu/circle-ci-react.svg)](https://circleci.com/gh/jeremiahogutu/weather-history-app) [![Maintainability](https://api.codeclimate.com/v1/badges/97e41be3fe208942fbfc/maintainability)](https://codeclimate.com/github/jeremiahogutu/weather-history-app/maintainability) [![Release](https://img.shields.io/github/v/release/jeremiahogutu/weather-history-app)](https://github.com/jeremiahogutu/weather-history-app/releases) [![Licence](https://img.shields.io/npm/l/react)](https://opensource.org/licenses/MIT) [![Uptime](https://img.shields.io/uptimerobot/ratio/m783422140-722f44b9fb6973424feac344)](https://stats.uptimerobot.com/EZ1lvu3orK) [![Status](https://img.shields.io/uptimerobot/status/m783422140-722f44b9fb6973424feac344)](https://stats.uptimerobot.com/EZ1lvu3orK)
 
 Weather history app using dark sky api
 
