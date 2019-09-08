@@ -1,5 +1,8 @@
-# weather-app
-weather app using dark sky api
+# Weather History App
+
+[![CircleCI](https://img.shields.io/circleci/build/github/jeremiahogutu/circle-ci-react.svg)](https://circleci.com/gh/jeremiahogutu/weather-history-app) [![Maintainability](https://api.codeclimate.com/v1/badges/785d13dca205e8150eb0/maintainability)](https://codeclimate.com/github/jeremiahogutu/weather-history-app/maintainability)
+
+Weather history app using dark sky api
 
 ## Installation
 * `git clone https://github.com/jeremiahogutu/weather-history-app.git`
